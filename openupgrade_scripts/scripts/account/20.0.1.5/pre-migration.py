@@ -46,9 +46,21 @@ _moved_fields = {
     ],
 }
 
+# Stored selection values that 20.0 does not accept any more: a payment that is posted and
+# not yet matched is 'paid' (Odoo recomputes paid and reconciled), the two types of
+# reconciliation model are called matching_rule and reco_model.
+_SELECTION_VALUES = """
+    UPDATE account_payment SET state = 'paid' WHERE state = 'in_process';
+    UPDATE account_reconcile_model SET rule_type = 'matching_rule'
+     WHERE rule_type = 'invoice_matching';
+    UPDATE account_reconcile_model SET rule_type = 'reco_model'
+     WHERE rule_type = 'writeoff_button';
+"""
+
 
 @openupgrade.migrate()
 def migrate(env, version):
+    openupgrade.logged_query(env.cr, _SELECTION_VALUES)
     if openupgrade.is_module_installed(env.cr, "stock_account"):
         openupgrade.rename_xmlids(env.cr, _renamed_xmlids)
         for model, fields in _moved_fields.items():
