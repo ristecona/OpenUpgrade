@@ -13,6 +13,13 @@ renamed_modules = {
 # preexisting module names
 merged_modules = {
     # odoo
+    "account_add_gln": "account",
+    "base_vat": "account",
+    "website_sale_autocomplete": "website_address_autocomplete",
+    "website_sale_comparison": "website_sale",
+    "website_sale_comparison_wishlist": "website_sale",
+    "website_sale_stock_wishlist": "website_sale_stock",
+    "website_sale_wishlist": "website_sale",
     # odoo/enterprise
     # OCA/...
 }
