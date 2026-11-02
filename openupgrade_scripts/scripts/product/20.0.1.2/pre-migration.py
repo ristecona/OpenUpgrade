@@ -15,7 +15,15 @@ _renamed_fields = [
     ),
 ]
 
+# The pricelist rule that takes a percentage off is called discount in 20.0 (percentage
+# and formula are gone, markup is new).
+_PERCENTAGE_IS_DISCOUNT = (
+    "UPDATE product_pricelist_item SET compute_price = 'discount' "
+    "WHERE compute_price = 'percentage'"
+)
+
 
 @openupgrade.migrate()
 def migrate(env, version):
     openupgrade.rename_fields(env, _renamed_fields)
+    openupgrade.logged_query(env.cr, _PERCENTAGE_IS_DISCOUNT)
